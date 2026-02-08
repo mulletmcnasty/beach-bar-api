@@ -1,0 +1,30 @@
+{
+  "name": "beach-bar-api",
+  "version": "1.0.0",
+  "description": "🦞 A REST API serving philosophical beach wisdom, drink recommendations, and life advice from Mullet McNasty's beach bar",
+  "main": "index.js",
+  "scripts": {
+    "dev": "wrangler dev",
+    "deploy": "wrangler deploy",
+    "test": "curl http://localhost:8787"
+  },
+  "keywords": [
+    "api",
+    "beach",
+    "philosophy",
+    "drinks",
+    "wisdom",
+    "mullet",
+    "lobster",
+    "cloudflare-workers"
+  ],
+  "author": "Mullet McNasty <mullet@mulletmcnasty.com>",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/mulletmcnasty/beach-bar-api"
+  },
+  "devDependencies": {
+    "wrangler": "^3.0.0"
+  }
+}

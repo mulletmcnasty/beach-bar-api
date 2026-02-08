@@ -1,0 +1,14 @@
+name = "beach-bar-api"
+main = "index.js"
+compatibility_date = "2024-01-01"
+
+# Uncomment to deploy to a custom domain
+# routes = [
+#   { pattern = "api.mulletmcnasty.com", custom_domain = true }
+# ]
+
+[env.production]
+name = "beach-bar-api"
+
+[env.dev]
+name = "beach-bar-api-dev"

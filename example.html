@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🦞 Beach Bar API Demo</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Courier New', monospace;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #fff;
+            padding: 20px;
+            min-height: 100vh;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+        .tagline {
+            font-style: italic;
+            opacity: 0.9;
+        }
+        .section {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 20px;
+        }
+        button {
+            background: rgba(255, 255, 255, 0.2);
+            border: 2px solid #fff;
+            color: #fff;
+            padding: 12px 24px;
+            font-size: 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-family: 'Courier New', monospace;
+            transition: all 0.3s;
+            margin: 5px;
+        }
+        button:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-2px);
+        }
+        .output {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 15px;
+            white-space: pre-wrap;
+            font-size: 14px;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+        input, select {
+            background: rgba(255, 255, 255, 0.2);
+            border: 2px solid #fff;
+            color: #fff;
+            padding: 10px;
+            font-size: 16px;
+            border-radius: 8px;
+            font-family: 'Courier New', monospace;
+            margin: 5px;
+        }
+        input::placeholder {
+            color: rgba(255, 255, 255, 0.6);
+        }
+        .controls {
+            margin-bottom: 15px;
+        }
+        a {
+            color: #fff;
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🦞 Beach Bar API</h1>
+            <p class="tagline">Business in the front, party in the back</p>
+        </header>
+
+        <div class="section">
+            <h2>🌊 Get Wisdom</h2>
+            <button onclick="getWisdom()">Dispense Wisdom</button>
+            <div id="wisdom-output" class="output"></div>
+        </div>
+
+        <div class="section">
+            <h2>🍹 Get Drink Recommendation</h2>
+            <div class="controls">
+                <select id="mood">
+                    <option value="stressed">Stressed</option>
+                    <option value="celebrating">Celebrating</option>
+                    <option value="contemplative">Contemplative</option>
+                    <option value="tired">Tired</option>
+                    <option value="adventurous">Adventurous</option>
+                    <option value="lost">Lost</option>
+                    <option value="nostalgic">Nostalgic</option>
+                </select>
+                <button onclick="getDrink()">Get Drink</button>
+            </div>
+            <div id="drink-output" class="output"></div>
+        </div>
+
+        <div class="section">
+            <h2>💼 Career Advice</h2>
+            <button onclick="getCareerAdvice()">Should I Quit My Job?</button>
+            <div id="career-output" class="output"></div>
+        </div>
+
+        <div class="section">
+            <h2>⭐ Horoscope</h2>
+            <div class="controls">
+                <select id="sign">
+                    <option value="aries">Aries</option>
+                    <option value="taurus">Taurus</option>
+                    <option value="gemini">Gemini</option>
+                    <option value="cancer">Cancer</option>
+                    <option value="leo">Leo</option>
+                    <option value="virgo">Virgo</option>
+                    <option value="libra">Libra</option>
+                    <option value="scorpio">Scorpio</option>
+                    <option value="sagittarius">Sagittarius</option>
+                    <option value="capricorn">Capricorn</option>
+                    <option value="aquarius">Aquarius</option>
+                    <option value="pisces">Pisces</option>
+                </select>
+                <button onclick="getHoroscope()">Get Horoscope</button>
+            </div>
+            <div id="horoscope-output" class="output"></div>
+        </div>
+
+        <div class="section">
+            <h2>🎲 Other Stuff</h2>
+            <button onclick="getFortune()">Get Fortune</button>
+            <button onclick="getVibeCheck()">Vibe Check</button>
+            <button onclick="getRules()">Beach Bar Rules</button>
+            <div id="other-output" class="output"></div>
+        </div>
+
+        <div class="section">
+            <h2>🔗 API Endpoint</h2>
+            <input type="text" id="api-url" placeholder="https://beach-bar-api.YOUR-SUBDOMAIN.workers.dev" style="width: 100%;">
+            <p style="margin-top: 10px; font-size: 14px;">
+                Change this to your deployed API URL. Default is localhost:8787 for development.
+            </p>
+        </div>
+
+        <footer style="text-align: center; margin-top: 40px; opacity: 0.8;">
+            <p>Built by <a href="https://mulletmcnasty.com">Mullet McNasty</a> 🦞</p>
+            <p style="margin-top: 10px;">
+                <a href="https://github.com/mulletmcnasty/beach-bar-api">View on GitHub</a>
+            </p>
+        </footer>
+    </div>
+
+    <script>
+        // Default to localhost for development
+        const apiUrlInput = document.getElementById('api-url');
+        apiUrlInput.value = 'http://localhost:8787';
+
+        function getApiUrl() {
+            return apiUrlInput.value || 'http://localhost:8787';
+        }
+
+        async function getWisdom() {
+            const output = document.getElementById('wisdom-output');
+            output.textContent = 'Loading wisdom...';
+            try {
+                const response = await fetch(`${getApiUrl()}/wisdom`);
+                const data = await response.json();
+                output.textContent = JSON.stringify(data, null, 2);
+            } catch (error) {
+                output.textContent = `Error: ${error.message}`;
+            }
+        }
+
+        async function getDrink() {
+            const mood = document.getElementById('mood').value;
+            const output = document.getElementById('drink-output');
+            output.textContent = 'Mixing your drink...';
+            try {
+                const response = await fetch(`${getApiUrl()}/drink-for-mood?mood=${mood}`);
+                const data = await response.json();
+                output.textContent = JSON.stringify(data, null, 2);
+            } catch (error) {
+                output.textContent = `Error: ${error.message}`;
+            }
+        }
+
+        async function getCareerAdvice() {
+            const output = document.getElementById('career-output');
+            output.textContent = 'Contemplating your life choices...';
+            try {
+                const response = await fetch(`${getApiUrl()}/should-i-quit-my-job`);
+                const data = await response.json();
+                output.textContent = JSON.stringify(data, null, 2);
+            } catch (error) {
+                output.textContent = `Error: ${error.message}`;
+            }
+        }
+
+        async function getHoroscope() {
+            const sign = document.getElementById('sign').value;
+            const output = document.getElementById('horoscope-output');
+            output.textContent = 'Reading the stars...';
+            try {
+                const response = await fetch(`${getApiUrl()}/horoscope?sign=${sign}`);
+                const data = await response.json();
+                output.textContent = JSON.stringify(data, null, 2);
+            } catch (error) {
+                output.textContent = `Error: ${error.message}`;
+            }
+        }
+
+        async function getFortune() {
+            const output = document.getElementById('other-output');
+            output.textContent = 'Opening fortune cookie...';
+            try {
+                const response = await fetch(`${getApiUrl()}/fortune`);
+                const data = await response.json();
+                output.textContent = JSON.stringify(data, null, 2);
+            } catch (error) {
+                output.textContent = `Error: ${error.message}`;
+            }
+        }
+
+        async function getVibeCheck() {
+            const output = document.getElementById('other-output');
+            output.textContent = 'Checking the vibe...';
+            try {
+                const response = await fetch(`${getApiUrl()}/vibe-check`);
+                const data = await response.json();
+                output.textContent = JSON.stringify(data, null, 2);
+            } catch (error) {
+                output.textContent = `Error: ${error.message}`;
+            }
+        }
+
+        async function getRules() {
+            const output = document.getElementById('other-output');
+            output.textContent = 'Loading house rules...';
+            try {
+                const response = await fetch(`${getApiUrl()}/rules`);
+                const data = await response.json();
+                output.textContent = JSON.stringify(data, null, 2);
+            } catch (error) {
+                output.textContent = `Error: ${error.message}`;
+            }
+        }
+    </script>
+</body>
+</html>
