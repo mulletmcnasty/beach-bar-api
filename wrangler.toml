@@ -1,6 +1,7 @@
 name = "beach-bar-api"
 main = "index.js"
 compatibility_date = "2024-01-01"
+account_id = "c28ea6353f4a578e429690ad3944c16b"
 
 # Uncomment to deploy to a custom domain
 # routes = [
